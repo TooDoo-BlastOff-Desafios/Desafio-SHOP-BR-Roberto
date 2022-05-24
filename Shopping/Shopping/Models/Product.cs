@@ -32,13 +32,12 @@ namespace EComerce.Models
         public double Quant { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
-        [Display(Name = "IDLoja")]
-        [ForeignKey("Loja")]
-        public int LojaId { get; set; }
-
-        [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Loja")]
-        public Loja Loja { get; set; }
+        [Column("LojaId")]
+        [ForeignKey("Loja")]
+        public Int32 LojaId { get; set; }
+
+        public virtual Loja? Loja { get; set; }
 
     }
 }

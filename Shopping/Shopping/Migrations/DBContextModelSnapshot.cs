@@ -58,7 +58,8 @@ namespace Shopping.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("LojaId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("LojaId");
 
                     b.Property<string>("Marca")
                         .IsRequired()
@@ -118,7 +119,54 @@ namespace Shopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Client");
+                    b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Shopping.Models.Compra", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int")
+                        .HasColumnName("ClientId");
+
+                    b.Property<int>("Cod")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CorreioId")
+                        .HasColumnType("int")
+                        .HasColumnName("CorreioId");
+
+                    b.Property<string>("Pagamento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int")
+                        .HasColumnName("ProductId");
+
+                    b.Property<long>("Quantidade")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("ValorTotal")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("Cod")
+                        .IsUnique();
+
+                    b.HasIndex("CorreioId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Compras");
                 });
 
             modelBuilder.Entity("Shopping.Models.Correio", b =>
@@ -137,18 +185,50 @@ namespace Shopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Correio");
+                    b.ToTable("Correios");
                 });
 
             modelBuilder.Entity("EComerce.Models.Product", b =>
                 {
                     b.HasOne("EComerce.Models.Loja", "Loja")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("LojaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Loja");
+                });
+
+            modelBuilder.Entity("Shopping.Models.Compra", b =>
+                {
+                    b.HasOne("Shopping.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shopping.Models.Correio", "Correio")
+                        .WithMany()
+                        .HasForeignKey("CorreioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EComerce.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("Correio");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("EComerce.Models.Loja", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

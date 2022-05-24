@@ -18,7 +18,7 @@ namespace Shopping.Models
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "CEP")]
-        [RegularExpression(@"\d{5}-\d{3}")]
+        [RegularExpression(@"\d{5}\-\d{3}",ErrorMessage ="Formato do CEP #####-###")]
         public string CEP { get; set; }
 
         [Required(ErrorMessage ="O Campo está Vazio")]
@@ -35,7 +35,6 @@ namespace Shopping.Models
         [Display(Name = "Nivel")]
         public ENivel Nivel { get; set; } = ENivel.Nivel1;
 
-        [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Telefone")]
         [RegularExpression(@"^\(\d{2}\)9\d{4}\-\d{4}$", ErrorMessage = "O Formato do Telefone precisa ser (DD)9####-####")]
         public string? Telefone { get; set; }
