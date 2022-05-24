@@ -14,8 +14,16 @@ namespace EComerce.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Loja> Lojas { get; set; }
-        public DbSet<Shopping.Models.Client>? Client { get; set; }
-        public DbSet<Shopping.Models.Correio>? Correio { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Correio> Correios { get; set; }
+        public DbSet<Compra> Compras { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Compra>()
+                .HasIndex(u => u.Cod)
+                .IsUnique();
+        }
 
     }
 }

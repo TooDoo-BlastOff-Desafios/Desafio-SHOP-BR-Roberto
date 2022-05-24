@@ -23,20 +23,20 @@ namespace Shopping.Controllers
         // GET: Clients
         public async Task<IActionResult> Index()
         {
-              return _context.Client != null ? 
-                          View(await _context.Client.ToListAsync()) :
+              return _context.Clients != null ? 
+                          View(await _context.Clients.ToListAsync()) :
                           Problem("Entity set 'DBContext.Client'  is null.");
         }
 
         // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Client == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Client
+            var client = await _context.Clients
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
@@ -71,12 +71,12 @@ namespace Shopping.Controllers
         // GET: Clients/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Client == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Client.FindAsync(id);
+            var client = await _context.Clients.FindAsync(id);
             if (client == null)
             {
                 return NotFound();
@@ -122,12 +122,12 @@ namespace Shopping.Controllers
         // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Client == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var client = await _context.Client
+            var client = await _context.Clients
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {
@@ -142,14 +142,14 @@ namespace Shopping.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Client == null)
+            if (_context.Clients == null)
             {
                 return Problem("Entity set 'DBContext.Client'  is null.");
             }
-            var client = await _context.Client.FindAsync(id);
+            var client = await _context.Clients.FindAsync(id);
             if (client != null)
             {
-                _context.Client.Remove(client);
+                _context.Clients.Remove(client);
             }
             
             await _context.SaveChangesAsync();
@@ -158,7 +158,7 @@ namespace Shopping.Controllers
 
         private bool ClientExists(int id)
         {
-          return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Clients?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

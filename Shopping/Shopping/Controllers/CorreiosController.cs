@@ -22,20 +22,20 @@ namespace Shopping.Controllers
         // GET: Correios
         public async Task<IActionResult> Index()
         {
-              return _context.Correio != null ? 
-                          View(await _context.Correio.ToListAsync()) :
+              return _context.Correios != null ? 
+                          View(await _context.Correios.ToListAsync()) :
                           Problem("Entity set 'DBContext.Correio'  is null.");
         }
 
         // GET: Correios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Correio == null)
+            if (id == null || _context.Correios == null)
             {
                 return NotFound();
             }
 
-            var correio = await _context.Correio
+            var correio = await _context.Correios
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (correio == null)
             {
@@ -70,12 +70,12 @@ namespace Shopping.Controllers
         // GET: Correios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Correio == null)
+            if (id == null || _context.Correios == null)
             {
                 return NotFound();
             }
 
-            var correio = await _context.Correio.FindAsync(id);
+            var correio = await _context.Correios.FindAsync(id);
             if (correio == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace Shopping.Controllers
         // GET: Correios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Correio == null)
+            if (id == null || _context.Correios == null)
             {
                 return NotFound();
             }
 
-            var correio = await _context.Correio
+            var correio = await _context.Correios
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (correio == null)
             {
@@ -141,14 +141,14 @@ namespace Shopping.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Correio == null)
+            if (_context.Correios == null)
             {
                 return Problem("Entity set 'DBContext.Correio'  is null.");
             }
-            var correio = await _context.Correio.FindAsync(id);
+            var correio = await _context.Correios.FindAsync(id);
             if (correio != null)
             {
-                _context.Correio.Remove(correio);
+                _context.Correios.Remove(correio);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace Shopping.Controllers
 
         private bool CorreioExists(int id)
         {
-          return (_context.Correio?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Correios?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
