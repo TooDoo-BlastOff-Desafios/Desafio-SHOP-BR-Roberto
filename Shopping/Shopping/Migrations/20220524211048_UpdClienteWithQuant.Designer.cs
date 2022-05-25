@@ -3,6 +3,7 @@ using EComerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Shopping.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20220524211048_UpdClienteWithQuant")]
+    partial class UpdClienteWithQuant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,7 @@ namespace Shopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lojas", (string)null);
+                    b.ToTable("Lojas");
                 });
 
             modelBuilder.Entity("EComerce.Models.Product", b =>
@@ -83,13 +85,16 @@ namespace Shopping.Migrations
 
                     b.HasIndex("LojaId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Shopping.Models.Client", b =>
                 {
-                    b.Property<string>("CPF")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("CEP")
                         .IsRequired()
@@ -117,9 +122,9 @@ namespace Shopping.Migrations
                     b.Property<string>("Telefone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CPF");
+                    b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Shopping.Models.Compra", b =>
@@ -130,10 +135,9 @@ namespace Shopping.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ClientCPF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("ClientCPF");
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int")
+                        .HasColumnName("ClientId");
 
                     b.Property<int>("Cod")
                         .HasColumnType("int");
@@ -158,7 +162,7 @@ namespace Shopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientCPF");
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("Cod")
                         .IsUnique();
@@ -167,7 +171,7 @@ namespace Shopping.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Compras", (string)null);
+                    b.ToTable("Compras");
                 });
 
             modelBuilder.Entity("Shopping.Models.Correio", b =>
@@ -186,7 +190,7 @@ namespace Shopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Correios", (string)null);
+                    b.ToTable("Correios");
                 });
 
             modelBuilder.Entity("EComerce.Models.Product", b =>
@@ -204,7 +208,7 @@ namespace Shopping.Migrations
                 {
                     b.HasOne("Shopping.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientCPF")
+                        .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

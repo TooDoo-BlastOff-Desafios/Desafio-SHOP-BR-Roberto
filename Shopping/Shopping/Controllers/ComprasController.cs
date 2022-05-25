@@ -53,9 +53,9 @@ namespace Shopping.Controllers
         // GET: Compras/Create
         public IActionResult Create()
         {
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Nome");
-            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Prazo");
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome");
+            ViewData["ClientCPF"] = new SelectList(_context.Clients, "CPF", "CPF");
+            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Id");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
             return View();
         }
 
@@ -64,17 +64,19 @@ namespace Shopping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Cod,ValorTotal,Pagamento,Quantidade,ClientId,CorreioId,ProductId")] Compra compra)
+        public async Task<IActionResult> Create([Bind("Id,Cod,Pagamento,Quantidade,ClientCPF,CorreioId,ProductId")] Compra compra)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(compra);
+
+                _context.Database.ExecuteSqlInterpolated
+              ($"EXEC InsertData {compra.Cod} {compra.Pagamento} {compra.Quantidade} {compra.ClientCPF} {compra.CorreioId} {compra.ProductId}");
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Nome", compra.ClientId);
-            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Prazo", compra.CorreioId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome", compra.ProductId);
+            ViewData["ClientCPF"] = new SelectList(_context.Clients, "CPF", "CPF", compra.ClientCPF);
+            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Id", compra.CorreioId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", compra.ProductId);
             return View(compra);
         }
 
@@ -91,9 +93,9 @@ namespace Shopping.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Nome", compra.ClientId);
-            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Prazo", compra.CorreioId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome", compra.ProductId);
+            ViewData["ClientCPF"] = new SelectList(_context.Clients, "CPF", "CPF", compra.ClientCPF);
+            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Id", compra.CorreioId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", compra.ProductId);
             return View(compra);
         }
 
@@ -102,7 +104,7 @@ namespace Shopping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Cod,ValorTotal,Pagamento,Quantidade,ClientId,CorreioId,ProductId")] Compra compra)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Cod,Pagamento,Quantidade,ClientCPF,CorreioId,ProductId")] Compra compra)
         {
             if (id != compra.Id)
             {
@@ -129,9 +131,9 @@ namespace Shopping.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Nome", compra.ClientId);
-            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Prazo", compra.CorreioId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome", compra.ProductId);
+            ViewData["ClientCPF"] = new SelectList(_context.Clients, "CPF", "CPF", compra.ClientCPF);
+            ViewData["CorreioId"] = new SelectList(_context.Correios, "Id", "Id", compra.CorreioId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", compra.ProductId);
             return View(compra);
         }
 

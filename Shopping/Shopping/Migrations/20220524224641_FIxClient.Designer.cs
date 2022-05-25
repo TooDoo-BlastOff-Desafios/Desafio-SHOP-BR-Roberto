@@ -3,6 +3,7 @@ using EComerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Shopping.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20220524224641_FIxClient")]
+    partial class FIxClient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,7 +48,7 @@ namespace Shopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lojas", (string)null);
+                    b.ToTable("Lojas");
                 });
 
             modelBuilder.Entity("EComerce.Models.Product", b =>
@@ -83,7 +85,7 @@ namespace Shopping.Migrations
 
                     b.HasIndex("LojaId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Shopping.Models.Client", b =>
@@ -119,7 +121,7 @@ namespace Shopping.Migrations
 
                     b.HasKey("CPF");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Shopping.Models.Compra", b =>
@@ -167,7 +169,7 @@ namespace Shopping.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Compras", (string)null);
+                    b.ToTable("Compras");
                 });
 
             modelBuilder.Entity("Shopping.Models.Correio", b =>
@@ -186,7 +188,7 @@ namespace Shopping.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Correios", (string)null);
+                    b.ToTable("Correios");
                 });
 
             modelBuilder.Entity("EComerce.Models.Product", b =>

@@ -7,9 +7,10 @@ namespace Shopping.Models
     public class Client
     {
 
-        [Display(Name = "ID")]
+        [Display(Name = "CPF")]
         [Key]
-        public int Id { get; set; }
+        [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}\-\d{2}$",ErrorMessage ="Formato do CPF ###.###.###-##")]
+        public string CPF { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Nome")]
@@ -38,6 +39,10 @@ namespace Shopping.Models
         [Display(Name = "Telefone")]
         [RegularExpression(@"^\(\d{2}\)9\d{4}\-\d{4}$", ErrorMessage = "O Formato do Telefone precisa ser (DD)9####-####")]
         public string? Telefone { get; set; }
+
+        [Column("QuantidadeCompras")]
+        public int Quant { get; set; }
+
 
 
     }

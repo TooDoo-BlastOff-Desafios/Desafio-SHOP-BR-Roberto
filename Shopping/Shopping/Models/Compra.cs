@@ -28,9 +28,9 @@ namespace Shopping.Models
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Client")]
-        [Column("ClientId")]
-        [ForeignKey("ClientId")]
-        public Int32 ClientId { get; set; }
+        [Column("ClientCPF")]
+        [ForeignKey("ClientCPF")]
+        public String ClientCPF { get; set; }
 
         public virtual Client? Client { get; set; }
 
