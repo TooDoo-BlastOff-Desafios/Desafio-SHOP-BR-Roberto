@@ -66,10 +66,6 @@ namespace Shopping.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Cod,Pagamento,Quantidade,ClientCPF,CorreioId,ProductId")] Compra compra)
         {
-
-            if(compra.Quantidade>_context.Products.First(x=>x.Id==compra.ProductId).Quant)
-
-
             if (ModelState.IsValid)
             {
                _context.Database.ExecuteSqlInterpolated

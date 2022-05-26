@@ -18,6 +18,7 @@ namespace EComerce.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Correio> Correios { get; set; }
         public DbSet<Compra> Compras { get; set; }
+        public DbSet<Estoque> Estoque{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -6,92 +6,98 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EComerce.Data;
-using EComerce.Models;
+using Shopping.Models;
 
 namespace Shopping.Controllers
 {
-    public class ProductsController : Controller
+    public class EstoquesController : Controller
     {
         private readonly DBContext _context;
 
-        public ProductsController(DBContext context)
+        public EstoquesController(DBContext context)
         {
             _context = context;
         }
 
-        // GET: Products
+        // GET: Estoques
         public async Task<IActionResult> Index()
         {
-            var dBContext = _context.Products;
+            var dBContext = _context.Estoque.Include(e => e.Loja).Include(e => e.Product);
             return View(await dBContext.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: Estoques/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Estoque == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            var estoque = await _context.Estoque
+                .Include(e => e.Loja)
+                .Include(e => e.Product)
+                .FirstOrDefaultAsync(m => m.ProductId == id);
+            if (estoque == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(estoque);
         }
 
-        // GET: Products/Create
+        // GET: Estoques/Create
         public IActionResult Create()
         {
             ViewData["LojaId"] = new SelectList(_context.Lojas, "Id", "Nome");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: Estoques/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind($"Id,Nome,Marca,Tipo,Preco,Quant")] Product product)
+        public async Task<IActionResult> Create([Bind("LojaId,ProductId")] Estoque estoque)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                _context.Add(estoque);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            ViewData["LojaId"] = new SelectList(_context.Lojas, "Id", "Nome", estoque.LojaId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome", estoque.ProductId);
+            return View(estoque);
         }
 
-        // GET: Products/Edit/5
+        // GET: Estoques/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Estoque == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
+            var estoque = await _context.Estoque.FindAsync(id);
+            if (estoque == null)
             {
                 return NotFound();
             }
-
-            return View(product);
+            ViewData["LojaId"] = new SelectList(_context.Lojas, "Id", "Nome", estoque.LojaId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome", estoque.ProductId);
+            return View(estoque);
         }
 
-        // POST: Products/Edit/5
+        // POST: Estoques/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Marca,Tipo,Preco,Quant,LojaId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("LojaId,ProductId")] Estoque estoque)
         {
-            if (id != product.Id)
+            if (id != estoque.ProductId)
             {
                 return NotFound();
             }
@@ -100,12 +106,12 @@ namespace Shopping.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    _context.Update(estoque);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.Id))
+                    if (!EstoqueExists(estoque.ProductId))
                     {
                         return NotFound();
                     }
@@ -116,49 +122,53 @@ namespace Shopping.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            ViewData["LojaId"] = new SelectList(_context.Lojas, "Id", "Nome", estoque.LojaId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Nome", estoque.ProductId);
+            return View(estoque);
         }
 
-        // GET: Products/Delete/5
+        // GET: Estoques/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null || _context.Estoque == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            var estoque = await _context.Estoque
+                .Include(e => e.Loja)
+                .Include(e => e.Product)
+                .FirstOrDefaultAsync(m => m.ProductId == id);
+            if (estoque == null)
             {
                 return NotFound();
             }
 
-            return View(product);
+            return View(estoque);
         }
 
-        // POST: Products/Delete/5
+        // POST: Estoques/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Products == null)
+            if (_context.Estoque == null)
             {
-                return Problem("Entity set 'DBContext.Products'  is null.");
+                return Problem("Entity set 'DBContext.Estoque'  is null.");
             }
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            var estoque = await _context.Estoque.FindAsync(id);
+            if (estoque != null)
             {
-                _context.Products.Remove(product);
+                _context.Estoque.Remove(estoque);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        private bool EstoqueExists(int id)
         {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Estoque?.Any(e => e.ProductId == id)).GetValueOrDefault();
         }
     }
 }

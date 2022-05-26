@@ -5,7 +5,7 @@
         Debito,
         Credito,
         Pix,
-        Diinheiro
+        Dinheiro
 
     }
 }
