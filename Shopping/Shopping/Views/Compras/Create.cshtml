@@ -1,4 +1,5 @@
-﻿@model Shopping.Models.Compra
+﻿@using Shopping.Models.Enum
+@model Shopping.Models.Compra
 
 @{
     ViewData["Title"] = "Create";
@@ -18,23 +19,17 @@
                 <span asp-validation-for="Cod" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ValorTotal" class="control-label"></label>
-                <input asp-for="ValorTotal" class="form-control" />
-                <span asp-validation-for="ValorTotal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Pagamento" class="control-label"></label>
-                <input asp-for="Pagamento" class="form-control" />
-                <span asp-validation-for="Pagamento" class="text-danger"></span>
+                <select asp-for="Pagamento" class ="form-control" asp-items="Html.GetEnumSelectList<EPagamento>()"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Quantidade" class="control-label"></label>
-                <input asp-for="Quantidade" class="form-control" />
+                <input  type="number" min="1" asp-for="Quantidade" class="form-control" />
                 <span asp-validation-for="Quantidade" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ClientId" class="control-label"></label>
-                <select asp-for="ClientId" class ="form-control" asp-items="ViewBag.ClientId"></select>
+                <label asp-for="ClientCPF" class="control-label"></label>
+                <select asp-for="ClientCPF" class ="form-control" asp-items="ViewBag.ClientCPF"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CorreioId" class="control-label"></label>

@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Shopping.Models.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EComerce.Models
 {
     public class Product
     {
-        [Display(Name = "ID")]
+        [Display(Name = "IDProduto")]
         [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
-        [Display(Name = "Nome")]
+        [Display(Name = "Nome Produto")]
         [RegularExpression(@"^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ][\sa-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]*$", ErrorMessage = "Precisa ser apenas letras")]
         public string Nome { get; set; }
 
@@ -20,11 +21,11 @@ namespace EComerce.Models
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Tipo")] 
-        [RegularExpression(@"^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ][\sa-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]*$", ErrorMessage = "Precisa ser apenas letras")]
-        public string Tipo { get; set; }
+        public TipoPro Tipo { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Preço")]
+        [DataType(DataType.Currency)]
         public double Preco { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]

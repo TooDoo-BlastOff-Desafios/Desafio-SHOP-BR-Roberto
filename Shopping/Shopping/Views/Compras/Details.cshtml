@@ -38,23 +38,23 @@
             @Html.DisplayNameFor(model => model.Client)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Client.Nome)
+            @Html.DisplayFor(model => model.Client.CPF)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Correio.Prazo)
+            @Html.DisplayNameFor(model => model.Correio)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Correio.Prazo)
+            @Html.DisplayFor(model => model.Correio.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Product)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Product.Nome)
+            @Html.DisplayFor(model => model.Product.Id)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Cod">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

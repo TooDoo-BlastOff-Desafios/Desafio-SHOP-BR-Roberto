@@ -12,6 +12,7 @@ namespace EComerce.Data
 
         }
 
+        public DbSet<Avaliacao> Avaliacaos { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Loja> Lojas { get; set; }
         public DbSet<Client> Clients { get; set; }
@@ -24,6 +25,7 @@ namespace EComerce.Data
                 .HasIndex(u => u.Cod)
                 .IsUnique();
         }
+
 
     }
 }

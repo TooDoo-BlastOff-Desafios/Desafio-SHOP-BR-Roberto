@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EComerce.Data;
 using Shopping.Models;
-using E_Commerce.Models.Enum;
 
 namespace Shopping.Controllers
 {
@@ -25,11 +24,11 @@ namespace Shopping.Controllers
         {
               return _context.Clients != null ? 
                           View(await _context.Clients.ToListAsync()) :
-                          Problem("Entity set 'DBContext.Client'  is null.");
+                          Problem("Entity set 'DBContext.Clients'  is null.");
         }
 
         // GET: Clients/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Clients == null)
             {
@@ -37,7 +36,7 @@ namespace Shopping.Controllers
             }
 
             var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CPF == id);
             if (client == null)
             {
                 return NotFound();
@@ -57,7 +56,7 @@ namespace Shopping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,CEP,Email,Senha,Telefone")] Client client)
+        public async Task<IActionResult> Create([Bind("CPF,Nome,CEP,Email,Senha,Telefone")] Client client)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +68,7 @@ namespace Shopping.Controllers
         }
 
         // GET: Clients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Clients == null)
             {
@@ -89,9 +88,9 @@ namespace Shopping.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,CEP,Email,Senha,Telefone")] Client client)
+        public async Task<IActionResult> Edit(string id, [Bind("CPF,Nome,CEP,Email,Senha,Telefone")] Client client)
         {
-            if (id != client.Id)
+            if (id != client.CPF)
             {
                 return NotFound();
             }
@@ -105,7 +104,7 @@ namespace Shopping.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClientExists(client.Id))
+                    if (!ClientExists(client.CPF))
                     {
                         return NotFound();
                     }
@@ -120,7 +119,7 @@ namespace Shopping.Controllers
         }
 
         // GET: Clients/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Clients == null)
             {
@@ -128,7 +127,7 @@ namespace Shopping.Controllers
             }
 
             var client = await _context.Clients
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.CPF == id);
             if (client == null)
             {
                 return NotFound();
@@ -140,11 +139,11 @@ namespace Shopping.Controllers
         // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Clients == null)
             {
-                return Problem("Entity set 'DBContext.Client'  is null.");
+                return Problem("Entity set 'DBContext.Clients'  is null.");
             }
             var client = await _context.Clients.FindAsync(id);
             if (client != null)
@@ -156,9 +155,9 @@ namespace Shopping.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClientExists(int id)
+        private bool ClientExists(string id)
         {
-          return (_context.Clients?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Clients?.Any(e => e.CPF == id)).GetValueOrDefault();
         }
     }
 }

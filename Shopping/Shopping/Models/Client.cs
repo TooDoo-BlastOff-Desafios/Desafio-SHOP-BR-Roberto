@@ -1,4 +1,4 @@
-﻿using E_Commerce.Models.Enum;
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,12 +7,13 @@ namespace Shopping.Models
     public class Client
     {
 
-        [Display(Name = "ID")]
+        [Display(Name = "CPFCliente")]
         [Key]
-        public int Id { get; set; }
+        [RegularExpression(@"^\d{3}\.\d{3}\.\d{3}\-\d{2}$",ErrorMessage ="Formato do CPF ###.###.###-##")]
+        public string CPF { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
-        [Display(Name = "Nome")]
+        [Display(Name = "Nome Cliente")]
         [RegularExpression(@"^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ][\sa-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]*$", ErrorMessage = "Precisa ser apenas letras")]
         public string Nome { get; set; }
 
@@ -33,11 +34,15 @@ namespace Shopping.Models
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Nivel")]
-        public ENivel Nivel { get; set; } = ENivel.Nivel1;
+        public int Nivel { get; set; } = 1;
 
         [Display(Name = "Telefone")]
         [RegularExpression(@"^\(\d{2}\)9\d{4}\-\d{4}$", ErrorMessage = "O Formato do Telefone precisa ser (DD)9####-####")]
         public string? Telefone { get; set; }
+
+        [Column("QuantidadeCompras")]
+        public int Quant { get; set; }
+
 
 
     }
