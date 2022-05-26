@@ -25,13 +25,13 @@
                 @Html.DisplayNameFor(model => model.Quantidade)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Client.CPF)
+                @Html.DisplayNameFor(model => model.Client.Nome)
             </th>
              <th>
                 @Html.DisplayNameFor(model => model.Correio.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product.Id)
+                @Html.DisplayNameFor(model => model.Product.Nome)
             </th>
             <th></th>
         </tr>
@@ -52,13 +52,13 @@
                 @Html.DisplayFor(modelItem => item.Quantidade)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Client.CPF)
+                @Html.DisplayFor(modelItem => item.Client.Nome)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Correio.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Product.Id)
+                @Html.DisplayFor(modelItem => item.Product.Nome)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

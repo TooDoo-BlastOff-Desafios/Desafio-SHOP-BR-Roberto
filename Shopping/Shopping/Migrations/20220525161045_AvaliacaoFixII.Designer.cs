@@ -4,6 +4,7 @@ using EComerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Shopping.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20220525161045_AvaliacaoFixII")]
+    partial class AvaliacaoFixII
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,8 +78,9 @@ namespace Shopping.Migrations
                     b.Property<double>("Quant")
                         .HasColumnType("float");
 
-                    b.Property<int>("Tipo")
-                        .HasColumnType("int");
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -95,6 +98,7 @@ namespace Shopping.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("ClientCPF")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("ClientCPF");
 
@@ -178,8 +182,9 @@ namespace Shopping.Migrations
                         .HasColumnType("int")
                         .HasColumnName("CorreioId");
 
-                    b.Property<int>("Pagamento")
-                        .HasColumnType("int");
+                    b.Property<string>("Pagamento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int")
@@ -239,7 +244,9 @@ namespace Shopping.Migrations
                 {
                     b.HasOne("Shopping.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientCPF");
+                        .HasForeignKey("ClientCPF")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Shopping.Models.Correio", "Correio")
                         .WithMany()

@@ -1,4 +1,5 @@
 ﻿using EComerce.Models;
+using Shopping.Models.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,17 +11,18 @@ namespace Shopping.Models
         [Display(Name = "Id")]
         public int Id{ get; set; }
 
+        [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Codigo Rastreamento")]
         public int Cod { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Valor Total")]
+        [DataType(DataType.Currency)]
         public double ValorTotal { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Forma de Pagamento")]
-        [RegularExpression(@"^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ][\sa-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]*$", ErrorMessage = "Precisa ser apenas letras")]
-        public string Pagamento { get; set; }
+        public EPagamento Pagamento { get; set; }
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Quantidade")]

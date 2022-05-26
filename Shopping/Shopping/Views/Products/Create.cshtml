@@ -1,4 +1,5 @@
-﻿@model EComerce.Models.Product
+﻿@using Shopping.Models.Enum
+@model EComerce.Models.Product
 
 @{
     ViewData["Title"] = "Create";
@@ -24,17 +25,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Tipo" class="control-label"></label>
-                <input asp-for="Tipo" class="form-control" />
-                <span asp-validation-for="Tipo" class="text-danger"></span>
+                <select asp-for="Tipo" class ="form-control" asp-items="Html.GetEnumSelectList<TipoPro>()"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Preco" class="control-label"></label>
-                <input asp-for="Preco" class="form-control" />
+                <input type="number" min="1" asp-for="Preco" class="form-control" />
                 <span asp-validation-for="Preco" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Quant" class="control-label"></label>
-                <input asp-for="Quant" class="form-control" />
+                <input type="number" min="1" asp-for="Quant" class="form-control" />
                 <span asp-validation-for="Quant" class="text-danger"></span>
             </div>
             <div class="form-group">
