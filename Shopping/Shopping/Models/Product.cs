@@ -30,15 +30,9 @@ namespace EComerce.Models
 
         [Required(ErrorMessage = "O Campo está Vazio")]
         [Display(Name = "Quantidade")]
-        public double Quant { get; set; }
+        public int Quant { get; set; }
 
-        [Required(ErrorMessage = "O Campo está Vazio")]
-        [Display(Name = "Loja")]
-        [Column("LojaId")]
-        [ForeignKey("Loja")]
-        public Int32 LojaId { get; set; }
-
-        public virtual Loja? Loja { get; set; }
+        
 
     }
 }

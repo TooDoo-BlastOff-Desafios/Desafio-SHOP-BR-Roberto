@@ -58,10 +58,6 @@ namespace Shopping.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("LojaId")
-                        .HasColumnType("int")
-                        .HasColumnName("LojaId");
-
                     b.Property<string>("Marca")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -73,15 +69,13 @@ namespace Shopping.Migrations
                     b.Property<double>("Preco")
                         .HasColumnType("float");
 
-                    b.Property<double>("Quant")
-                        .HasColumnType("float");
+                    b.Property<int>("Quant")
+                        .HasColumnType("int");
 
                     b.Property<int>("Tipo")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LojaId");
 
                     b.ToTable("Products");
                 });
@@ -224,15 +218,29 @@ namespace Shopping.Migrations
                     b.ToTable("Correios");
                 });
 
-            modelBuilder.Entity("EComerce.Models.Product", b =>
+            modelBuilder.Entity("Shopping.Models.Estoque", b =>
                 {
-                    b.HasOne("EComerce.Models.Loja", "Loja")
-                        .WithMany()
-                        .HasForeignKey("LojaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Navigation("Loja");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("LojaId")
+                        .HasColumnType("int")
+                        .HasColumnName("LojaId");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int")
+                        .HasColumnName("ProductId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LojaId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Estoque");
                 });
 
             modelBuilder.Entity("Shopping.Models.Avaliacao", b =>
@@ -281,6 +289,25 @@ namespace Shopping.Migrations
                     b.Navigation("Client");
 
                     b.Navigation("Correio");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Shopping.Models.Estoque", b =>
+                {
+                    b.HasOne("EComerce.Models.Loja", "Loja")
+                        .WithMany()
+                        .HasForeignKey("LojaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EComerce.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Loja");
 
                     b.Navigation("Product");
                 });

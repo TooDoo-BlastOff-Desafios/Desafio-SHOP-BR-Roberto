@@ -4,7 +4,7 @@
 
 namespace Shopping.Migrations
 {
-    public partial class Fix : Migration
+    public partial class Restart : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,18 +12,18 @@ namespace Shopping.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CEP = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Senha = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nivel = table.Column<int>(type: "int", nullable: false),
-                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuantidadeCompras = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
+                    table.PrimaryKey("PK_Clients", x => x.CPF);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,18 +64,44 @@ namespace Shopping.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Marca = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tipo = table.Column<int>(type: "int", nullable: false),
                     Preco = table.Column<double>(type: "float", nullable: false),
-                    Quant = table.Column<double>(type: "float", nullable: false),
-                    LojaId = table.Column<int>(type: "int", nullable: false)
+                    Quant = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Avaliacaos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nota = table.Column<int>(type: "int", nullable: false),
+                    Comentario = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClientCPF = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CorreioId = table.Column<int>(type: "int", nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Avaliacaos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Lojas_LojaId",
-                        column: x => x.LojaId,
-                        principalTable: "Lojas",
+                        name: "FK_Avaliacaos_Clients_ClientCPF",
+                        column: x => x.ClientCPF,
+                        principalTable: "Clients",
+                        principalColumn: "CPF");
+                    table.ForeignKey(
+                        name: "FK_Avaliacaos_Correios_CorreioId",
+                        column: x => x.CorreioId,
+                        principalTable: "Correios",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Avaliacaos_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -88,9 +114,9 @@ namespace Shopping.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Cod = table.Column<int>(type: "int", nullable: false),
                     ValorTotal = table.Column<double>(type: "float", nullable: false),
-                    Pagamento = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Pagamento = table.Column<int>(type: "int", nullable: false),
                     Quantidade = table.Column<long>(type: "bigint", nullable: false),
-                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    ClientCPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CorreioId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -98,10 +124,10 @@ namespace Shopping.Migrations
                 {
                     table.PrimaryKey("PK_Compras", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Compras_Clients_ClientId",
-                        column: x => x.ClientId,
+                        name: "FK_Compras_Clients_ClientCPF",
+                        column: x => x.ClientCPF,
                         principalTable: "Clients",
-                        principalColumn: "Id",
+                        principalColumn: "CPF",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Compras_Correios_CorreioId",
@@ -117,10 +143,51 @@ namespace Shopping.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Estoque",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LojaId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Estoque", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Estoque_Lojas_LojaId",
+                        column: x => x.LojaId,
+                        principalTable: "Lojas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Estoque_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
-                name: "IX_Compras_ClientId",
+                name: "IX_Avaliacaos_ClientCPF",
+                table: "Avaliacaos",
+                column: "ClientCPF");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Avaliacaos_CorreioId",
+                table: "Avaliacaos",
+                column: "CorreioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Avaliacaos_ProductId",
+                table: "Avaliacaos",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Compras_ClientCPF",
                 table: "Compras",
-                column: "ClientId");
+                column: "ClientCPF");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Compras_Cod",
@@ -139,15 +206,26 @@ namespace Shopping.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_LojaId",
-                table: "Products",
+                name: "IX_Estoque_LojaId",
+                table: "Estoque",
                 column: "LojaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Estoque_ProductId",
+                table: "Estoque",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Avaliacaos");
+
+            migrationBuilder.DropTable(
                 name: "Compras");
+
+            migrationBuilder.DropTable(
+                name: "Estoque");
 
             migrationBuilder.DropTable(
                 name: "Clients");
@@ -156,10 +234,10 @@ namespace Shopping.Migrations
                 name: "Correios");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Lojas");
 
             migrationBuilder.DropTable(
-                name: "Lojas");
+                name: "Products");
         }
     }
 }
